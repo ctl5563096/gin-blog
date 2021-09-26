@@ -41,15 +41,18 @@ func WriteLog(fileNameInput string,level int,message string )  {
 	switch level {
 		case 1:
 			prefix = "[info]"
+			break
 		case 2:
 			prefix = "[mysql]"
+			break
 		case 3:
 			prefix = "[work]"
+			break
 		default:
 			prefix = "[error]"
 	}
 	// 构造日志对象 并且写入日志
 	debugLog := log.New(logFile,prefix,log.Llongfile)
-	debugLog.SetPrefix("[error]")
+	debugLog.SetPrefix(prefix)
 	debugLog.Println(message)
 }

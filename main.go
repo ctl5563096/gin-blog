@@ -10,11 +10,12 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 func main() {
 	// 初始化env配置
-	var appEnv = os.Getenv("APP_ENV")
+	var appEnv  = os.Getenv("APP_ENV")
 	var envFile = ".env"
 	if appEnv != "" {
 		envFile = ".env" + "." +appEnv
@@ -24,7 +25,8 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	util.WriteLog("test",1,"项目启动" +  util.ReturnCurrentTime("second"))
+	util.WriteLog("project",3,"项目启动")
+	util.WriteLog("project",3,"端口:" + strconv.Itoa(setting.HTTPPort))
 	// 初始化路由
 	router := routers.InitRouter()
 	// 初始化模型链接池
