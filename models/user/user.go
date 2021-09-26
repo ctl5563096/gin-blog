@@ -1,5 +1,8 @@
 package user
 
+import (
+	"gin-blog/pkg/util"
+)
 
 type AdminUser struct {
 	UserName string `json:"user_name"`
@@ -8,19 +11,24 @@ type AdminUser struct {
 	IsBlack int `json:"is_black"`
 }
 
-
-func GetUsers(pageNum int, pageSize int, maps interface {}) (tags []AdminUser) {
-	db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&tags)
-	return
+// GetUsers 获取用户列表
+func GetUsers(pageNum int, pageSize int, maps interface {}) ([]*AdminUser,error) {
+	var res  []*AdminUser
+	db := db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&res)
+	if db.Error != nil {
+		util.WriteLog("mysql_error",2,db.Error.Error())
+		return nil,db.Error
+	}
+	return res,nil
 }
 
-func GetUsersTotal(maps interface {}) (count int64){
-	db.Model(&AdminUser{}).Where(maps).Count(&count)
-	return
-}
-
-// GetFirst 获取第一条记录
-func GetFirst()  (res[]AdminUser){
-	db.First(&res)
-	return
+// GetUserPassWordByUserName 根据用户名搜索用户
+func GetUserPassWordByUserName(maps interface {}) ([]*AdminUser,error) {
+	var res  []*AdminUser
+	db := db.Where(maps).First(&res)
+	if db.Error != nil {
+		util.WriteLog("mysql_error",2,db.Error.Error())
+		return nil,db.Error
+	}
+	return res,db.Error
 }

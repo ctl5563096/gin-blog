@@ -46,7 +46,7 @@ func Init()  {
 	}
 
 	// 允许复数
-	db.SingularTable(false)
+	db.SingularTable(true)
 	// 具体配置看一下上述const描述
 	db.DB().SetMaxIdleConns(maxIdleConns)
 	db.DB().SetMaxOpenConns(maxOpenConns)
