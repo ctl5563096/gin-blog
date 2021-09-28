@@ -4,8 +4,8 @@ import (
 	"gin-blog/models/user"
 	"gin-blog/pkg/e"
 	"gin-blog/pkg/util"
-	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"
+	"github.com/unknwon/com"
 	"net/http"
 )
 
@@ -34,10 +34,7 @@ func GetUser(c *gin.Context) {
 		isUse = com.StrTo(arg).MustInt()
 		maps["is_use"] = isUse
 	}
-
-	data["lists"] = user.GetUsers(util.GetPage(c),pageSize,maps)
-	data["total"] = user.GetUsersTotal(maps)
-
+	data["lists"],_ = user.GetUsers(util.GetPage(c),pageSize,maps)
 	c.JSON(http.StatusOK, gin.H{
 		"code" : code,
 		"msg" : e.GetMsg(code),
@@ -53,12 +50,4 @@ func AddTag(c *gin.Context) {
 		"msg" : e.GetMsg(200),
 		"data" : data,
 	})
-}
-
-// EditTag 修改文章标签
-func EditTag(c *gin.Context) {
-}
-
-// DeleteTag 删除文章标签
-func DeleteTag(c *gin.Context) {
 }

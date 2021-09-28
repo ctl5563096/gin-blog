@@ -1,6 +1,7 @@
 package util
 
 import (
+	"fmt"
 	"log"
 	"os"
 )
@@ -37,7 +38,13 @@ func WriteLog(fileNameInput string,level int,message string )  {
 	}
 
 	// 关闭文件句柄 防止系统打开文件过多
-	defer logFile.Close()
+	defer func(logFile *os.File) {
+		err := logFile.Close()
+		if err != nil {
+
+			fmt.Println("关闭文件失败!!!")
+		}
+	}(logFile)
 	switch level {
 		case 1:
 			prefix = "[info]"
