@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"gin-blog/models"
+	"gin-blog/pkg/cache"
 	"gin-blog/pkg/setting"
 	"gin-blog/pkg/util"
 	"gin-blog/routers"
@@ -31,6 +32,8 @@ func main() {
 	router := routers.InitRouter()
 	// 初始化模型链接池
 	models.Init()
+	// 初始化缓存
+	cache.Init()
 	s := &http.Server{
 		Addr:           fmt.Sprintf(":%d", setting.HTTPPort),
 		Handler:        router,

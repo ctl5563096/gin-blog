@@ -1,9 +1,8 @@
 package groups
 
 import (
-	"gin-blog/routers/api/login"
+	"gin-blog/controller/login"
 	"github.com/gin-gonic/gin"
-
 )
 
 // LoginBaseRouter /** 登陆基本接口 **/
