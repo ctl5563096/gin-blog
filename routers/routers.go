@@ -23,6 +23,7 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(setting.RunMode)
 	group := r.Group("")
 	groups.LoginBaseRouter(group)
+	groups.TestRouter(group)
 	ginpprof.Wrap(r)
 	return r
 }

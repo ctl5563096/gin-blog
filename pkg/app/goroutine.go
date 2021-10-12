@@ -47,7 +47,7 @@ func GoroutineNotPanic(handlers ...func() error) (err error) {
 	// 等待执行完
 	wg.Wait()
 	// 记录抛出的致命错误
-	if pErr.Err != nil {
+	if pErr.Err != nil 	{
 		msg := fmt.Sprintf("协程组调用致命抛错【Error: %s】 \nStack: %s", pErr.Err, pErr.Stack)
 		util.WriteLog("协程出错",3,msg)
 	}
