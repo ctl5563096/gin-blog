@@ -12,5 +12,9 @@ func LoginBaseRouter(Router *gin.RouterGroup) {
 	{
 		// 获取主业务接口
 		apiRouterV1.POST("login", login.LoginBackend)
+		// 检查token是否有效
+		apiRouterV1.POST("check-token", login.CheckToken)
+		// 登出接口
+		apiRouterV1.POST("logout", login.LoginOut)
 	}
 }

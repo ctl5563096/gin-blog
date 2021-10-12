@@ -13,6 +13,9 @@ var errorMsg = map[int]string{
 	ERROR_AUTH 							: "Token错误",
 	MISS_PARAMS 						: "参数缺失,请验证参数",
 	PASSWORD_ERROR 						: "密码错误,请重新登陆",
+	MISS_TOKEN							: "缺少token,请重新检查",
+	USER_IN_BLACK						: "用户在黑名单里面,无法使用",
+	SYSTEM_ERROR						: "系统错误",
 }
 
 func GetMsg(code int) string {
