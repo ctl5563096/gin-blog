@@ -21,17 +21,21 @@ type AdminUser struct {
 // BeforeBusiness 业务中间件检查token是否有效
 func BeforeBusiness() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// 先从从post的请求体里面取 最后再从get里面获取
-		requestData := make(map[string]interface{}) //注意该结构接受的内容
-		err  := c.BindJSON(&requestData)
-		if err != nil {
-			app.FailWithMessage(err.Error(),1,c)
-			c.Abort()
-			return
-		}
-		token := requestData["token"]
+		// 先从从GET的请求体里面取 最后再从POST里面获取
+		token := c.DefaultQuery("token","")
 		if  token == ""{
-			token = c.Query("token")
+			requestData := make(map[string]interface{}) //注意该结构接受的内容
+			err  := c.BindJSON(&requestData)
+			if err != nil {
+				app.FailWithMessage(e.GetMsg(e.MISS_TOKEN),e.MISS_TOKEN,c)
+				c.Abort()
+				return
+			}
+			for k,v := range requestData {
+				if k == "token" {
+					token = v.(string)
+				}
+			}
 			if token == "" {
 				app.FailWithMessage(e.GetMsg(e.MISS_TOKEN),e.MISS_TOKEN,c)
 				c.Abort()
