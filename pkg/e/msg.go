@@ -16,6 +16,11 @@ var errorMsg = map[int]string{
 	MISS_TOKEN							: "缺少token,请重新检查",
 	USER_IN_BLACK						: "用户在黑名单里面,无法使用",
 	SYSTEM_ERROR						: "系统错误",
+	USER_NOT_EXIST						: "用户不存在",
+	UPDATE_ERROR						: "更新失败",
+	INSERT_ERROR						: "插入失败",
+	DELETE_ERROR						: "删除失败",
+	OPERATION_ONT_PERMITTED				: "操作不被允许",
 }
 
 func GetMsg(code int) string {

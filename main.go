@@ -34,6 +34,8 @@ func main() {
 	models.Init()
 	// 初始化缓存
 	cache.Init()
+	// 初始化语言包
+	//valid.Init()
 	s := &http.Server{
 		Addr:           fmt.Sprintf(":%d", setting.HTTPPort),
 		Handler:        router,

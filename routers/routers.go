@@ -24,6 +24,7 @@ func InitRouter() *gin.Engine {
 	group := r.Group("")
 	groups.LoginBaseRouter(group)
 	groups.TestRouter(group)
+	groups.UserBaseRouter(group)
 	ginpprof.Wrap(r)
 	return r
 }

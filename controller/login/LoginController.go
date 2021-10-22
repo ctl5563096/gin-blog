@@ -33,6 +33,7 @@ type AdminUser struct {
 	Password string `json:"password"`
 	PhoneNum string `json:"phone_num"`
 	IsBlack  int `json:"is_black"`
+	Role 	 int `json:"role"`
 }
 
 // LoginBackend /** 后台登陆 **/
