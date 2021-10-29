@@ -32,8 +32,8 @@ type AdminUser struct {
 	UserName string `json:"user_name"`
 	Password string `json:"password"`
 	PhoneNum string `json:"phone_num"`
-	IsBlack  int `json:"is_black"`
-	Role 	 int `json:"role"`
+	IsBlack  int 	`json:"is_black"`
+	Role 	 int 	`json:"role"`
 }
 
 // LoginBackend /** 后台登陆 **/
@@ -64,12 +64,30 @@ func LoginBackend(c *gin.Context)  {
 	// 先判断切片长度
 	if len(res) > 0 {
 		token, err := GetTokenByAdminUser((*AdminUser)(res[0]))
-		//这里生成token
-		//token,err 	  := GetToken(requestData.Username)
 		if err != nil {
 			app.FailWithMessage(e.GetMsg(e.ERROR_AUTH_TOKEN), e.ERROR_AUTH_TOKEN, c)
 			return
 		}
+		redisConnect := mainCache.MainRedisConn.Get()
+		// 使用完连接一定要关闭返回给连接池 不然会造成redis连接数过高
+		defer func(redisConnect redis.Conn) {
+			err := redisConnect.Close()
+			if err != nil {
+				util.WriteLog("close_redis_error",4,"close redis connect error,cache:mainCache")
+			}
+		}(redisConnect)
+		lastToken, _ := redisConnect.Do("GET",requestData.Username)
+		// 删除之前的token
+		_, _ = redisConnect.Do("DEL", lastToken)
+		_, err = redisConnect.Do("DEL",requestData.Username)
+		if err != nil {
+			util.WriteLog("del_key_error",4,"del user & token error,cache:mainCache")
+			return
+		}
+		// 存user和token的关系
+		_, err = redisConnect.Do("SET",requestData.Username,token)
+		//这里生成token
+		//token,err 	  := GetToken(requestData.Username)
 		data["token"] = token
 		app.OkWithCodeData("登陆成功", data, e.SUCCESS, c)
 	}else {

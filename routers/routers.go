@@ -7,6 +7,7 @@ import (
 	"gin-blog/routers/groups"
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"time"
 )
 
@@ -20,11 +21,14 @@ func InitRouter() *gin.Engine {
 	r.GET("/health", func(c *gin.Context) {
 		c.String(e.SUCCESS, "health - " + fmt.Sprint(time.Now().Unix()))
 	})
+	// 静态资源文件访问
+	r.StaticFS("/assets", http.Dir("resource/"))
 	gin.SetMode(setting.RunMode)
 	group := r.Group("")
 	groups.LoginBaseRouter(group)
 	groups.TestRouter(group)
 	groups.UserBaseRouter(group)
+	groups.UploadBaseRouter(group)
 	ginpprof.Wrap(r)
 	return r
 }
