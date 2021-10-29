@@ -21,6 +21,8 @@ var errorMsg = map[int]string{
 	INSERT_ERROR						: "插入失败",
 	DELETE_ERROR						: "删除失败",
 	OPERATION_ONT_PERMITTED				: "操作不被允许",
+	IMAGE_TYPE_ERROR					: "上传图片类型不被允许",
+	UPLOAD_FAIL							: "上传失败",
 }
 
 func GetMsg(code int) string {
