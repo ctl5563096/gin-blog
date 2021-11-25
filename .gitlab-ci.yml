@@ -15,6 +15,7 @@ install_deps_job:
   script:
     - cd /data/gopath/go-lang
     - su root
+    - A5563096z
     - git pull
     - go build -mod=mod
     - ./gin-blog
