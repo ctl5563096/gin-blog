@@ -1,0 +1,38 @@
+# 定义 stages（阶段，会依次执行）
+stages:
+  - install_deps
+  - build_prod
+  - deploy_prod
+
+# 安装构建依赖
+install_deps_job:
+  stage: install_deps
+  # 在哪个分支才会执行脚本
+  only:
+    # - dev
+    # - release
+    - master
+  script:
+    - echo '模拟安装构建依赖阶段'
+  tags:
+    - my-tag
+
+# 构建预prod环境src目录下应用
+build_prod_job:
+  stage: build_prod
+  only:
+    - master
+  script:
+    - echo '构建预prod环境src目录下应用阶段'
+  tags:
+    - my-tag
+
+# 部署生产环境
+deploy_prod_job:
+  stage: deploy_prod
+  only:
+    - master
+  script:
+    - echo '部署生产环境阶段'
+  tags:
+    - my-tag
