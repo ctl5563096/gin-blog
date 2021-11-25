@@ -13,8 +13,8 @@ install_deps_job:
     # - release
     - master
   script:
+    - sudo su
     - cd /data/gopath/go-lang
-    - who
     - git pull
     - go build -mod=mod
     - ./gin-blog
