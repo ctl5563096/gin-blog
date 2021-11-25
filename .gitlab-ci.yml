@@ -16,7 +16,7 @@ install_deps_job:
     - cd /data/gopath/go-lang
     - git pull
     - go build
-    - ./gin-blog
+    - systemctl restart blog
   tags:
     - my-tag
 
