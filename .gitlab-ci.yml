@@ -14,8 +14,9 @@ install_deps_job:
     - master
   script:
     - cd /data/gopath/go-lang
-    - go build -mod=mod
     - su www
+    - git pull
+    - go build -mod=mod
     - ./gin-blog
   tags:
     - my-tag
