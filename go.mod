@@ -4,6 +4,7 @@ go 1.17
 
 require (
 	github.com/DeanThompson/ginpprof v0.0.0-20201112072838-007b1e56b2e1
+	github.com/aliyun/aliyun-oss-go-sdk v2.1.10+incompatible
 	github.com/gin-gonic/gin v1.7.4
 	github.com/go-ini/ini v1.63.2
 	github.com/go-playground/locales v0.14.0
@@ -14,7 +15,6 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/opentracing/opentracing-go v1.2.0
 	github.com/unknwon/com v1.0.1
-	go.uber.org/zap v1.19.1
 )
 
 require (
@@ -30,8 +30,10 @@ require (
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
+	go.uber.org/zap v1.19.1 // indirect
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	golang.org/x/sys v0.0.0-20210806184541-e5e7981a1069 // indirect
 	golang.org/x/text v0.3.6 // indirect
+	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

@@ -22,13 +22,17 @@ func InitRouter() *gin.Engine {
 		c.String(e.SUCCESS, "health - " + fmt.Sprint(time.Now().Unix()))
 	})
 	// 静态资源文件访问
-	r.StaticFS("/assets", http.Dir("resource/"))
+	r.StaticFS("/resource", http.Dir("resource/"))
 	gin.SetMode(setting.RunMode)
 	group := r.Group("")
+	// 注册基础路由
 	groups.LoginBaseRouter(group)
 	groups.TestRouter(group)
 	groups.UserBaseRouter(group)
 	groups.UploadBaseRouter(group)
+	groups.ArticleBaseRouter(group)
+	groups.RuleBaseRouter(group)
+	groups.SystemBaseRouter(group)
 	ginpprof.Wrap(r)
 	return r
 }

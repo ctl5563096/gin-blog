@@ -2,7 +2,6 @@ package user
 
 import (
 	"encoding/json"
-	"fmt"
 	"gin-blog/pkg/util"
 )
 
@@ -10,6 +9,7 @@ import (
 var tableName = "ci_admin_user"
 
 type AdminUser struct {
+	Id		 int 	`json:"id"`
 	UserName string `json:"user_name"`
 	Password string `json:"password"`
 	PhoneNum string `json:"phone_num"`
@@ -47,7 +47,6 @@ func GetUserPassWordByUserName(maps interface {}) ([]*AdminUser,error) {
 func CreatUser(params interface{}) (id int ,err error) {
 	err = db.Create(params).Error
 	if err != nil {
-		fmt.Println()
 		return 0,err
 	}
 	m := make(map[string]interface{})
