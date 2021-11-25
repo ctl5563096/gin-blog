@@ -29,6 +29,7 @@ type Request struct {
 
 // AdminUser 用户结构体
 type AdminUser struct {
+	Id		 int 	`json:"id"`
 	UserName string `json:"user_name"`
 	Password string `json:"password"`
 	PhoneNum string `json:"phone_num"`

@@ -23,6 +23,8 @@ var errorMsg = map[int]string{
 	OPERATION_ONT_PERMITTED				: "操作不被允许",
 	IMAGE_TYPE_ERROR					: "上传图片类型不被允许",
 	UPLOAD_FAIL							: "上传失败",
+	FIND_ARTICLE_ERROR					: "搜索文章失败",
+	PARAMS_ERROR						: "参数错误",
 }
 
 func GetMsg(code int) string {

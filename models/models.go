@@ -2,6 +2,10 @@ package models
 
 import (
 	"fmt"
+	"gin-blog/models/blog"
+	"gin-blog/models/oss"
+	"gin-blog/models/rule"
+	"gin-blog/models/system"
 	"gin-blog/models/user"
 	"github.com/jinzhu/gorm"
 	"strings"
@@ -15,6 +19,14 @@ func Init()  {
 
 	// 分别初始化各个库的链接池
 	user.Init()
+	// 初始化新blog数据库
+	blog.Init()
+	// 初始化权限数据库
+	rule.Init()
+	// 初始化资源数据库
+	oss.Init()
+	// 初始化系统数据库
+	system.Init()
 
 	// 设置表名【注意所有数据库链接都会通用这个方法】
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {
