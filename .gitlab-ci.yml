@@ -13,7 +13,6 @@ install_deps_job:
     # - release
     - master
   script:
-    - sudo su
     - cd /data/gopath/go-lang
     - git pull
     - go build -mod=mod
