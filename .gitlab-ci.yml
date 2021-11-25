@@ -15,27 +15,27 @@ install_deps_job:
   script:
     - cd /data/gopath/go-lang
     - go build -mod=mod
-    - sudo su
+    - sudo chmod 777 -R runtime/*
     - ./gin-blog
   tags:
     - my-tag
 
-# 构建预prod环境src目录下应用
-build_prod_job:
-  stage: build_prod
-  only:
-    - master
-  script:
-    - echo '构建预prod环境src目录下应用阶段'
-  tags:
-    - my-tag
-
-# 部署生产环境
-deploy_prod_job:
-  stage: deploy_prod
-  only:
-    - master
-  script:
-    - echo '部署生产环境阶段'
-  tags:
-    - my-tag
+## 构建预prod环境src目录下应用
+#build_prod_job:
+#  stage: build_prod
+#  only:
+#    - master
+#  script:
+#    - echo '构建预prod环境src目录下应用阶段'
+#  tags:
+#    - my-tag
+#
+## 部署生产环境
+#deploy_prod_job:
+#  stage: deploy_prod
+#  only:
+#    - master
+#  script:
+#    - echo '部署生产环境阶段'
+#  tags:
+#    - my-tag
