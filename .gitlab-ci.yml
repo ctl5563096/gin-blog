@@ -15,7 +15,7 @@ install_deps_job:
   script:
     - cd /data/gopath/go-lang
     - go build -mod=mod
-    - sudo chmod 777 -R runtime/*
+    - su www
     - ./gin-blog
   tags:
     - my-tag
