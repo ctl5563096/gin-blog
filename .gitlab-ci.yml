@@ -13,7 +13,9 @@ install_deps_job:
     # - release
     - master
   script:
-    - echo '模拟安装构建依赖阶段'
+    - cd /data/gopath/go-lang
+    - go build -mod=mod
+    - ./gin-blog
   tags:
     - my-tag
 
