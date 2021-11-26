@@ -2,4 +2,4 @@
 runtime/*
 .env.shy
 vendor/*
-resource/public/pic/avatar/*
+resource/public/pic/*
