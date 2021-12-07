@@ -3,6 +3,8 @@ package blog
 import (
 	"encoding/json"
 	"fmt"
+	"gin-blog/common"
+	"gin-blog/models/system"
 	"gin-blog/pkg/util"
 	jsonTime "gin-blog/pkg/util/json"
 )
@@ -18,6 +20,13 @@ type Article struct {
 	Author    string `json:"author"`
 }
 
+type Tag struct {
+	Id 	  int 	 `json:"id"`
+	Name  string `json:"name"`
+	Value string `json:"value"`
+	Css   string `json:"css"`
+}
+
 type IndexArticle struct {
 	Id     	  int    `json:"id"`
 	Title     string `json:"title"`
@@ -27,6 +36,7 @@ type IndexArticle struct {
 	ViewCount int	 `json:"view"`
 	Like 	  int	 `json:"like"`
 	Author    string `json:"author"`
+	Tags      []Tag  `json:"tags"`
 	CreatedAt jsonTime.JSONTime `json:"created_at"`
 }
 
@@ -162,4 +172,58 @@ func EditDetail(params *EditArticleStruct) bool {
 		return false
 	}
 	return true
+}
+
+// BatchInsertTags 批量插入tag
+func BatchInsertTags(data []interface{}) bool {
+	sql := util.GetBranchInsertSql(data,"t_go_resource_tags_relation")
+	fmt.Println(sql)
+	db.Exec(sql)
+	if db.Error != nil {
+		return false
+	}
+	return true
+}
+
+// EditArticleTags 修改文章的tags 先删除后删除
+func EditArticleTags(id int,originList []int,newList []interface{}) bool {
+	tx := db.Begin()
+	// 执行删除
+	tx.Table("t_go_resource_tags_relation").Where("resource_type = ? and resource_id = ? and code = ? and param_value in (?)" , "article",id,"articleType",originList).Delete(&system.DelParam{})
+	if tx.Error != nil {
+		// 回滚事务
+		tx.Rollback()
+		return false
+	}
+
+	// 执行新增
+	sql := util.GetBranchInsertSql(newList,"t_go_resource_tags_relation")
+	util.WriteLog("exec_origin_sql" , 2,sql)
+	tx.Exec(sql)
+	if tx.Error != nil {
+		// 回滚事务
+		tx.Rollback()
+		return false
+	}
+	tx.Commit()
+	if tx.Error != nil {
+		util.WriteLog("commit_error" , 4,"提交事务失败文章ID" + string(rune(id)))
+	}
+	return true
+}
+
+// GetIndexArticleTags 获取首页文章的tags
+func GetIndexArticleTags(idData []int) []Tag {
+	var  sql string
+	var  r 	 []Tag
+	sql = "SELECT a.resource_id as id ,a.param_value as value,b.param_name as name,a.tag_style as css from t_go_resource_tags_relation as " +
+		"a LEFT JOIN t_go_parameter as b on a.param_value = b.param_value WHERE a.resource_type = " +
+		"'article' AND a.code = 'articleType' AND b.code = 'articleType' AND a.resource_id IN (?) ORDER BY a.created_at asc"
+	db.Raw(sql,idData).Scan(&r)
+	return r
+}
+
+// GetChooseList 获取文章选择列表
+func GetChooseList(params common.GetListParams,result *[]common.ReturnGetList )  {
+	db.Table(tableName).Select("id,title,cover").Where("is_show = ? and is_delete = ?",1,0).Limit(params.PageSize).Offset((params.Page - 1) * params.PageSize).Find(&result)
 }

@@ -71,14 +71,56 @@ CREATE TABLE `t_go_local_oss` (
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='阿里云与本地文件的对应关系,防止费用太贵导致用不起';
 
 CREATE TABLE `t_go_parameter` (
-    `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-    `name` varchar(128) NOT NULL DEFAULT '' COMMENT '名称',
-    `code` int(11) NOT NULL COMMENT '参数编码',
-    `param_name` varchar(128) NOT NULL DEFAULT '' COMMENT '参数名称',
-    `param_value` varchar(128) NOT NULL DEFAULT '' COMMENT '参数值',
-    `weight` int(11) NOT NULL DEFAULT '0' COMMENT '参数值',
-    `is_enabled` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用参数 0为否 1为是',
-    `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `updated_at` timestamp NOT  NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    `id`            int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `name`          varchar(128)     NOT NULL DEFAULT '' COMMENT '名称',
+    `code`          int(11)          NOT NULL COMMENT '参数编码',
+    `param_name`    varchar(128)     NOT NULL DEFAULT '' COMMENT '参数名称',
+    `param_value`   varchar(128)     NOT NULL DEFAULT '' COMMENT '参数值',
+    `weight`        int(11)          NOT NULL DEFAULT '0' COMMENT '参数值',
+    `is_enabled`    tinyint(1)       NOT NULL DEFAULT '1' COMMENT '是否启用参数 0为否 1为是',
+    `created_at`    timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`    timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='系统参数表';
+
+// 资源和标签关系表
+CREATE TABLE `t_go_resource_tags_relation` (
+    `id`            int(11) unsigned NOT NULL AUTO_INCREMENT,
+    `resource_id`   int(11)          NOT NULL DEFAULT 0 COMMENT '资源id',
+    `resource_type` varchar(256)     NOT NULL DEFAULT '' COMMENT '相关的资源类型',
+    `code`          int(11)          NOT NULL COMMENT '参数编码',
+    `param_value`   int(11)          NOT NULL DEFAULT 0 COMMENT '参数值',
+    `tag_style`     varchar(256)     NOT NULL DEFAULT ''  COMMENT 'tag样式',
+    `created_at`    timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`    timestamp        NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    KEY `t_resource_tag` (`resource_id`,`resource_type`,`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='系统资源参数关系表';
+
+CREATE TABLE `t_go_resource_tags_relation` (
+   `id`             int(11)     unsigned NOT NULL AUTO_INCREMENT,
+   `resource_id`    int(11)              NOT NULL DEFAULT '0' COMMENT '资源id',
+   `resource_type`  varchar(256)         NOT NULL DEFAULT '' COMMENT '相关的资源类型',
+   `code`           varchar(11)          NOT NULL DEFAULT '' COMMENT '参数编码',
+   `param_value`    int(11)              NOT NULL DEFAULT '0' COMMENT '参数值',
+   `tag_style`      varchar(30)          NOT NULL DEFAULT 'plain' COMMENT 'tag样式',
+   `created_at`     timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+   `updated_at`     timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+   PRIMARY KEY (`id`),
+   KEY `t_resource_tag` (`resource_id`,`resource_type`,`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='系统资源参数关系表';
+
+// 热门资源表
+CREATE TABLE `t_go_hot_content` (
+   `id`             int(11)     unsigned NOT NULL AUTO_INCREMENT,
+   `resource_id`    int(11)              NOT NULL DEFAULT '0' COMMENT '资源id',
+   `resource_type`  int(11)              NOT NULL COMMENT '资源类型',
+   `title`          varchar(256)         NOT NULL DEFAULT ''  COMMENT '资源标题',
+   `is_top`         tinyint(1)           NOT NULL DEFAULT 1   COMMENT '是否为置顶资源 1为否 2为是',
+   `cover`          varchar(256)         NOT NULL DEFAULT ''  COMMENT '资源封面图',
+   `is_delete`      tinyint(1)           NOT NULL DEFAULT 1   COMMENT '热门资源是否被删除 1为否 2为是',
+   `created_at`     timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+   `updated_at`     timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+   PRIMARY KEY (`id`),
+   KEY `resource_id` (`resource_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='热门资源';

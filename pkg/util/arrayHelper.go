@@ -1,6 +1,6 @@
 package util
 
-import  (
+import (
 	"errors"
 	"fmt"
 	"reflect"
@@ -107,4 +107,31 @@ func RemoveDuplicate(v []int) []int {
 	}
 
 	return v[:toIndex]
+}
+
+// InArrayHelper 目前只支持int int64 string
+func InArrayHelper(needle interface{}, hyStack interface{}) bool {
+	switch key := needle.(type) {
+	case string:
+		for _, item := range hyStack.([]string) {
+			if key == item {
+				return true
+			}
+		}
+	case int:
+		for _, item := range hyStack.([]int) {
+			if key == item {
+				return true
+			}
+		}
+	case int64:
+		for _, item := range hyStack.([]int64) {
+			if key == item {
+				return true
+			}
+		}
+	default:
+		return false
+	}
+	return false
 }

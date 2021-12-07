@@ -141,3 +141,14 @@ func GetDetail(c *gin.Context)  {
 	app.OkWithData(res,c)
 	return
 }
+
+func GetTags(c *gin.Context)  {
+	var code = c.DefaultQuery("code","")
+	if code == "" {
+		app.FailWithMessage(e.GetMsg(e.PARAMS_ERROR),e.PARAMS_ERROR,c)
+		return
+	}
+	res := system.GetTagsTypeList(code)
+	app.OkWithData(res,c)
+	return
+}

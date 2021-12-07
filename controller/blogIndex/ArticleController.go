@@ -2,6 +2,7 @@ package blogIndex
 
 import (
 	"gin-blog/models/blog"
+	"gin-blog/models/system"
 	"gin-blog/pkg/app"
 	"gin-blog/pkg/e"
 	"gin-blog/pkg/util"
@@ -23,6 +24,24 @@ type AddArticleStruct struct {
 	IsShow   uint  	`json:"is_show"`
 }
 
+type AddArticleTagsStruct struct {
+	ID 		 int	`json:"id"`
+	List	 []int  `json:"list"`
+}
+
+type InsertTagsStruct struct {
+	ResourceId   int 	`json:"resource_id"`
+	ResourceType string `json:"resource_type"`
+	Code 		 string `json:"code"`
+	ParamValue	 int 	`json:"param_value"`
+}
+
+type EditArticleTagsStruct struct {
+	ID 		 	 int	`json:"id"`
+	OriginList	 []int 	`json:"origin_list"`
+	NewList	 	 []int 	`json:"new_list"`
+}
+
 // GetIndexBlog 首页最新文章
 func GetIndexBlog(c *gin.Context)  {
 	data := make(map[string] interface{})
@@ -30,6 +49,20 @@ func GetIndexBlog(c *gin.Context)  {
 	if err != nil {
 		app.FailWithMessage("获取文章首页失败!",1,c)
 		return
+	}
+	// 这里获取文章标签
+	var idData []int
+	for _,v := range res {
+		idData = append(idData,v.Id)
+	}
+	r := blog.GetIndexArticleTags(idData)
+	// 循环赋值
+	for _,v :=range r{
+		for _,i :=range res{
+			if v.Id == i.Id {
+				i.Tags = append(i.Tags,v)
+			}
+		}
 	}
 	data["list"] = res
 	app.OkWithData(data,c)
@@ -66,8 +99,8 @@ func AddArticle(c *gin.Context)  {
 	// 展示默认作者名称
 	r.Author = "shy"
 
-	_,_ = blog.CreatArticle(&r)
-	app.OK(c)
+	id,_ := blog.CreatArticle(&r)
+	app.OkWithData(id,c)
 	return
 }
 
@@ -170,5 +203,107 @@ func EditArticleDetail(c *gin.Context)  {
 		return
 	}
 	app.OK(c)
+	return
+}
+
+// AddArticleTags 新增文章tags
+func AddArticleTags(c *gin.Context)  {
+	var r AddArticleTagsStruct
+	var errStr string
+	var errorMap map[string][]string
+	err := c.ShouldBind(&r)
+	validate := validator.New()
+	err = validate.Struct(r)
+	if err != nil {
+		switch err.(type) {
+		case validator.ValidationErrors:
+			errorMap = valid.Translate(err)
+			//循环遍历Map 只返回第一个错误信息
+			for _,v:= range errorMap{
+				for _,z := range v{
+					util.WriteLog("article_business_error",4,z)
+					app.FailWithMessage(z,4,c)
+					return
+				}
+			}
+		default:
+			errStr = "未知错误"
+		}
+		app.FailWithMessage(errStr,1,c)
+		return
+	}
+
+	var insertData []interface{}
+
+	for _,v := range r.List {
+		var item InsertTagsStruct
+		item.ParamValue   = v
+		item.ResourceId	  = r.ID
+		item.ResourceType = "article"
+		item.Code		  = "articleType"
+		insertData = append(insertData, item)
+	}
+	res := blog.BatchInsertTags(insertData)
+	if !res {
+		app.Fail(c)
+		return
+	}
+	app.OK(c)
+	return
+}
+
+// GetArticleTags 获取文章的tags
+func GetArticleTags(c *gin.Context)  {
+	var id, _ = 	strconv.Atoi(c.DefaultQuery("id","0"))
+	if id <= 0 {
+		app.FailWithMessage(e.GetMsg(e.PARAMS_ERROR),e.PARAMS_ERROR,c)
+		return
+	}
+
+	// 去获取文章标签
+	dataList := system.GetRelationsByResource(id,"article","articleType")
+	app.OkWithData(dataList,c)
+	return
+}
+
+// EditArticleTags 修改文章的标签
+func EditArticleTags(c *gin.Context)  {
+	var p EditArticleTagsStruct
+	err := c.ShouldBind(&p)
+	if err != nil {
+		app.FailWithMessage(e.GetMsg(e.MISS_PARAMS),e.MISS_PARAMS,c)
+		return
+	}
+	// 修改文章的tags
+	var insertData []interface{}
+
+	for _,v := range p.NewList {
+		var item InsertTagsStruct
+		item.ParamValue   = v
+		item.ResourceId	  = p.ID
+		item.ResourceType = "article"
+		item.Code		  = "articleType"
+		insertData = append(insertData, item)
+	}
+	res := blog.EditArticleTags(p.ID,p.OriginList,insertData)
+	if !res {
+		app.Fail(c)
+		return
+	}
+	app.OK(c)
+	return
+}
+
+// GetFrontBlogTags 获取前端文章的标签
+func GetFrontBlogTags(c *gin.Context) {
+	var id, _ = 	strconv.Atoi(c.DefaultQuery("id","0"))
+	if id <= 0 {
+		app.FailWithMessage(e.GetMsg(e.PARAMS_ERROR),e.PARAMS_ERROR,c)
+		return
+	}
+
+	// 去获取文章标签
+	dataList := system.GetArticleTags(id)
+	app.OkWithData(dataList,c)
 	return
 }
