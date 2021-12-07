@@ -33,6 +33,7 @@ func InitRouter() *gin.Engine {
 	groups.ArticleBaseRouter(group)
 	groups.RuleBaseRouter(group)
 	groups.SystemBaseRouter(group)
+	groups.ResourceBaseRouter(group)
 	ginpprof.Wrap(r)
 	return r
 }

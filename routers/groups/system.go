@@ -18,7 +18,9 @@ func SystemBaseRouter(Router *gin.RouterGroup) {
 		apiRouterV1.DELETE("param",system.DelParam)
 		// 后台更新参数
 		apiRouterV1.PUT("param",system.EditParam)
-		// 后台更新参数
+		// 获取参数详情
 		apiRouterV1.GET("param",system.GetDetail)
+		// 获取指定code的tag
+		apiRouterV1.GET("tags",system.GetTags)
 	}
 }
