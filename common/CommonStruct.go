@@ -11,3 +11,7 @@ type ReturnGetList struct {
 	Cover string `json:"cover"`
 	Title string `json:"title"`
 }
+
+type Select struct {
+	Id int `json:"id"`
+}

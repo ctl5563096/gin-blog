@@ -2,6 +2,7 @@ package resource
 
 import (
 	"fmt"
+	"gin-blog/common"
 )
 
 type SearchStruct struct {
@@ -42,8 +43,19 @@ func GetResource(tableName string) []Data {
 
 // CreatedRecord 新建记录
 func CreatedRecord(params CreateData) bool {
+	// 先检查这个资源是否被删除过 如果是就恢复并且更新 否则就是插入
+	var r common.Select
+	db.Table(TableName).Select("*").Where("resource_id = ? and resource_type = ? and is_delete = ?",params.ResourceId,params.ResourceType,2).First(&r)
+	// 去更新
+	if r.Id > 0  {
+		db.Table(TableName).Where("id = ?",r.Id).Update(map[string]interface{}{"title": params.Title,"cover":params.Cover,"is_top":params.IsTop,"is_delete":1})
+		if db.Error != nil {
+			return false
+		}
+		return true
+	}
 	db.Table(TableName).Create(&params)
-	if db.Error != nil {
+	if db.Error != nil || params.Id <= 0{
 		return false
 	}
 	return true

@@ -13,7 +13,7 @@ func TestRouter(Router *gin.RouterGroup) {
 	apiRouterV1.Use(token.BeforeBusiness())
 	{
 		// 获取主业务接口
-		apiRouterV1.GET("test", test.Test)
+		apiRouterV1.GET("test", test.TestPort)
 	}
 
 }
