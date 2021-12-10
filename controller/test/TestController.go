@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Test 测试接口
-func Test(c *gin.Context)  {
+// TestPort 测试接口
+func TestPort(c *gin.Context)  {
 	userInfo := util.GetUserInfo(c)
 	fmt.Println(userInfo.(map[string]interface{})["is_black"])
 	data := make(map[string] interface{})

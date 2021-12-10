@@ -11,7 +11,7 @@ func ResourceBaseRouter(Router *gin.RouterGroup) {
 	apiRouterV1 := Router.Group("/v1/resource")
 	{
 		// 新增接口
-		apiRouterV1.POST("/hot/resource", resource.CreateHotRecord)
+		apiRouterV1.POST("/hot/resource", resource.CreateNewHotRecord)
 		// 获取后台列表
 		apiRouterV1.GET("/hot", resource.GetList)
 		// 更新热门资源的置顶状态

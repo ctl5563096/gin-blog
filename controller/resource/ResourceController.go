@@ -18,8 +18,8 @@ import (
 	"strconv"
 )
 
-// CreateHotRecord  新建热门资源
-func CreateHotRecord(c *gin.Context)  {
+// CreateNewHotRecord  新建热门资源
+func CreateNewHotRecord(c *gin.Context)  {
 	var r resource.CreateData
 	err := c.ShouldBind(&r)
 	err = valid.RequestData(&r)
