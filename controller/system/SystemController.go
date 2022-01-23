@@ -1,12 +1,14 @@
 package system
 
 import (
+	"fmt"
 	"gin-blog/models/system"
 	"gin-blog/pkg/app"
 	"gin-blog/pkg/e"
 	"gin-blog/pkg/util"
 	valid "gin-blog/vaild"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"math"
 	"strconv"
@@ -17,7 +19,8 @@ func Create(c *gin.Context)  {
 	var r system.Params
 	var errStr string
 	var errorMap map[string][]string
-	err := c.ShouldBind(&r)
+	err := c.ShouldBindBodyWith(&r,binding.JSON)
+	fmt.Println(r)
 	validate := validator.New()
 	err = validate.Struct(r)
 	if err != nil {
@@ -101,7 +104,7 @@ func EditParam(c *gin.Context) {
 	var v system.EditStruct
 	var errStr string
 	var errorMap map[string][]string
-	err := c.ShouldBind(&v)
+	err := c.ShouldBindBodyWith(&v,binding.JSON)
 	validate := validator.New()
 	err = validate.Struct(v)
 	if err != nil {

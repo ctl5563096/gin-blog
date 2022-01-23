@@ -8,6 +8,7 @@ import (
 	"gin-blog/pkg/util"
 	valid "gin-blog/vaild"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"math"
 	"strconv"
@@ -74,7 +75,7 @@ func AddArticle(c *gin.Context)  {
 	var r AddArticleStruct
 	var errStr string
 	var errorMap map[string][]string
-	err := c.ShouldBind(&r)
+	err := c.ShouldBindBodyWith(&r,binding.JSON)
 	validate := validator.New()
 	err = validate.Struct(r)
 	if err != nil {
@@ -174,7 +175,7 @@ func EditArticleDetail(c *gin.Context)  {
 	var r blog.EditArticleStruct
 	var errStr string
 	var errorMap map[string][]string
-	err := c.ShouldBind(&r)
+	err := c.ShouldBindBodyWith(&r,binding.JSON)
 	validate := validator.New()
 	err = validate.Struct(r)
 	if err != nil {
@@ -211,7 +212,7 @@ func AddArticleTags(c *gin.Context)  {
 	var r AddArticleTagsStruct
 	var errStr string
 	var errorMap map[string][]string
-	err := c.ShouldBind(&r)
+	err := c.ShouldBindBodyWith(&r,binding.JSON)
 	validate := validator.New()
 	err = validate.Struct(r)
 	if err != nil {
@@ -269,7 +270,7 @@ func GetArticleTags(c *gin.Context)  {
 // EditArticleTags 修改文章的标签
 func EditArticleTags(c *gin.Context)  {
 	var p EditArticleTagsStruct
-	err := c.ShouldBind(&p)
+	err := c.ShouldBindBodyWith(&p,binding.JSON)
 	if err != nil {
 		app.FailWithMessage(e.GetMsg(e.MISS_PARAMS),e.MISS_PARAMS,c)
 		return

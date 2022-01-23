@@ -2,9 +2,11 @@ package resource
 
 import (
 	_interface "gin-blog/interface"
+	"gin-blog/models/blog"
 	"gin-blog/models/resource"
 	"gin-blog/models/system"
 	"gin-blog/pkg/util"
+	"github.com/gin-gonic/gin/binding"
 
 	//"gin-blog/models/system"
 
@@ -21,7 +23,7 @@ import (
 // CreateNewHotRecord  新建热门资源
 func CreateNewHotRecord(c *gin.Context)  {
 	var r resource.CreateData
-	err := c.ShouldBind(&r)
+	err := c.ShouldBindBodyWith(&r,binding.JSON)
 	err = valid.RequestData(&r)
 	if err != nil {
 		app.Fail(c)
@@ -141,4 +143,24 @@ func GetResourceByType(c *gin.Context)  {
 	}
 	data := p.GetList(page,10)
 	app.OkWithData(data,c)
+}
+
+// GetResourceCodeArticle 获取具有code tag的文章
+func GetResourceCodeArticle(c *gin.Context)  {
+	var pageSize, _ 	= 	strconv.Atoi(c.DefaultQuery("pageSize","0"))
+	var page, _ 	= 	strconv.Atoi(c.DefaultQuery("page","0"))
+	if !valid.Page(page,pageSize){
+		app.LoseWithParameter("分页数据错误",c)
+		return
+	}
+	dataReturn := make(map[string] interface{})
+	totalCount := blog.SearchArticleByTagCount()
+	var result []blog.CodeArticleList
+	// 只有总条数大于0才去查询 或者是要查询的总条数少于所能查询到的总条数才去查
+	if totalCount > 0 || pageSize * page <= totalCount {
+		result = blog.SearchArticleByTag(page,pageSize)
+	}
+	dataReturn["list"] = result
+	dataReturn["count"] = totalCount
+	app.OkWithData(dataReturn,c)
 }

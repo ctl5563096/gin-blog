@@ -60,3 +60,8 @@ func FailWithParameter(message string, c *gin.Context) {
 func LoseWithParameter(message string, c *gin.Context) {
 	Result(http.StatusOK, e.MISS_PARAMS, message, map[string]interface{}{}, c)
 }
+
+// MissToken token验证失败
+func MissToken(c *gin.Context)  {
+	Result(e.MISS_TOKEN,e.MISS_TOKEN,e.GetMsg(e.MISS_TOKEN),map[string]interface{}{},c)
+}

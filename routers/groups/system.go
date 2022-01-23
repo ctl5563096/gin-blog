@@ -2,13 +2,14 @@ package groups
 
 import (
 	"gin-blog/controller/system"
+	token "gin-blog/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 // SystemBaseRouter /** 系统的基本接口 **/
 func SystemBaseRouter(Router *gin.RouterGroup) {
-	// v1版接口 上传类需要验证对应的token
-	apiRouterV1 := Router.Group("/v1/system")
+	// v1版接口 上传类需要验证对应的token 系统也需要接入token认证
+	apiRouterV1 := Router.Group("/v1/system").Use(token.BeforeBusiness())
 	{
 		// 新增参数
 		apiRouterV1.POST("param", system.Create)
