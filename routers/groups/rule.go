@@ -9,7 +9,7 @@ import (
 // RuleBaseRouter /** 文章基本接口 **/
 func RuleBaseRouter(Router *gin.RouterGroup) {
 	// v1版接口
-	apiRouterV1 := Router.Group("/v1/rule")
+	apiRouterV1 := Router.Group("/v1/rule").Use(token.BeforeBusiness())
 	{
 		// 获取侧边栏菜单
 		apiRouterV1.GET("menu", rule.GetMenu)

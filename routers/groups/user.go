@@ -8,8 +8,8 @@ import (
 
 // UserBaseRouter /** 用户基本接口 **/
 func UserBaseRouter(Router *gin.RouterGroup) {
-	// v1版接口
-	apiRouterV1 := Router.Group("/v1/user")
+	// v1版接口 用户类接口都需要接入token验证
+	apiRouterV1 := Router.Group("/v1/user").Use(token.BeforeBusiness())
 	{
 		// 创建用户
 		apiRouterV1.POST("create", user.CreateUser).Use(token.BeforeBusiness())

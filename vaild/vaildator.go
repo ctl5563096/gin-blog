@@ -74,3 +74,11 @@ func RequestData(params interface{}) error {
 	}
 	return nil
 }
+
+// Page 验证分页数据是否
+func Page(page int,pageSize int) bool {
+	if page <= 0 || pageSize <= 0 {
+		return false
+	}
+	return true
+}

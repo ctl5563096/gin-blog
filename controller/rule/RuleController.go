@@ -7,6 +7,7 @@ import (
 	"gin-blog/pkg/util"
 	valid "gin-blog/vaild"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	"strconv"
 )
@@ -20,7 +21,7 @@ func AddRule(c *gin.Context)  {
 	var v rule.AddRuleStruct
 	var errStr string
 	var errorMap map[string][]string
-	err := c.ShouldBind(&v)
+	err := c.ShouldBindBodyWith(&v,binding.JSON)
 	validate := validator.New()
 	err = validate.Struct(v)
 	if err != nil {
@@ -52,7 +53,7 @@ func EditRuleById(c *gin.Context)  {
 	var v rule.EditRule
 	var errStr string
 	var errorMap map[string][]string
-	err := c.ShouldBind(&v)
+	err := c.ShouldBindBodyWith(&v,binding.JSON)
 	validate := validator.New()
 	err = validate.Struct(v)
 	if err != nil {
@@ -134,7 +135,7 @@ func ChangeRoleRule(c *gin.Context)  {
 	var role, _ = 	strconv.Atoi(c.DefaultQuery("id","0"))
 	// 获取角色修改的权限组 在下面进行比较
 	var r Rule
-	err := c.ShouldBind(&r)
+	err := c.ShouldBindBodyWith(&r,binding.JSON)
 	if err != nil {
 		app.Fail(c)
 		return

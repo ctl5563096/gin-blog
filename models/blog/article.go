@@ -7,6 +7,7 @@ import (
 	"gin-blog/models/system"
 	"gin-blog/pkg/util"
 	jsonTime "gin-blog/pkg/util/json"
+	"strconv"
 )
 
 // 自定义表名
@@ -80,6 +81,13 @@ type EditArticleStruct struct {
 	Cover    string `json:"cover"`
 	Author   string `json:"author"`
 	IsShow   uint  	`json:"is_show"`
+}
+
+type CodeArticleList struct {
+	 Id		int `json:"id"`
+	 Title  string `json:"title"`
+	 Author string `json:"author"`
+	 CreatedAt jsonTime.JSONTime `json:"created_at"`
 }
 
 // GetIndexArticle 获取首页的文章
@@ -226,4 +234,31 @@ func GetIndexArticleTags(idData []int) []Tag {
 // GetChooseList 获取文章选择列表
 func GetChooseList(params common.GetListParams,result *[]common.ReturnGetList )  {
 	db.Table(tableName).Select("id,title,cover").Where("is_show = ? and is_delete = ?",1,0).Limit(params.PageSize).Offset((params.Page - 1) * params.PageSize).Find(&result)
+}
+
+// SearchArticleByTag 根据
+func SearchArticleByTag(page int,pageSize int) []CodeArticleList{
+	// 查询tag relation表的关系
+	var (
+		sql string
+		r []CodeArticleList
+	)
+	page = page - 1
+	sql = "SELECT a.id,a.title,a.created_at,a.author FROM t_go_article AS a " +
+		"LEFT JOIN (SELECT resource_id FROM t_go_resource_tags_relation WHERE resource_type = 'articleType' " +
+		"AND CODE = 'articleType' AND 'param_value' = 14 GROUP BY resource_id ) AS b ON a.id = b.resource_id WHERE " +
+		"a.is_show = 1 AND a.is_delete = 0 ORDER BY a.created_at DESC limit " + strconv.Itoa(page * pageSize) + "," +  strconv.Itoa(pageSize)
+	db.Raw(sql).Scan(&r)
+	return r
+}
+
+// SearchArticleByTagCount 计算总数
+func SearchArticleByTagCount() int {
+	var total int
+	sql := "SELECT count(a.id) as total FROM t_go_article AS a " +
+		"LEFT JOIN (SELECT resource_id FROM t_go_resource_tags_relation WHERE resource_type = 'articleType' " +
+		"AND CODE = 'articleType' AND 'param_value' = 14 GROUP BY resource_id ) AS b ON a.id = b.resource_id WHERE " +
+		"a.is_show = 1 AND a.is_delete = 0 "
+	db.Raw(sql).Count(&total)
+	return total
 }

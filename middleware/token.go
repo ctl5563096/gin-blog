@@ -7,6 +7,7 @@ import (
 	"gin-blog/pkg/e"
 	"gin-blog/pkg/util"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/gomodule/redigo/redis"
 )
 
@@ -25,9 +26,10 @@ func BeforeBusiness() gin.HandlerFunc {
 		token := c.DefaultQuery("token","")
 		if  token == ""{
 			requestData := make(map[string]interface{}) //注意该结构接受的内容
-			err  := c.BindJSON(&requestData)
+			err  := c.ShouldBindBodyWith(&requestData,binding.JSON)
 			if err != nil {
-				app.FailWithMessage(e.GetMsg(e.MISS_TOKEN),e.MISS_TOKEN,c)
+				app.MissToken(c)
+				//app.FailWithMessage(e.GetMsg(e.MISS_TOKEN),e.MISS_TOKEN,c)
 				c.Abort()
 				return
 			}
@@ -37,7 +39,8 @@ func BeforeBusiness() gin.HandlerFunc {
 				}
 			}
 			if token == "" {
-				app.FailWithMessage(e.GetMsg(e.MISS_TOKEN),e.MISS_TOKEN,c)
+				app.MissToken(c)
+				//app.FailWithMessage(e.GetMsg(e.MISS_TOKEN),e.MISS_TOKEN,c)
 				c.Abort()
 				return
 			}
@@ -53,7 +56,7 @@ func BeforeBusiness() gin.HandlerFunc {
 		// 从缓存里面查询一下是否存在token 如果存在则将对应的信息存进request里面方便后面调用
 		res,err := redis.String(redisConnect.Do("GET",token))
 		if err != nil{
-				app.FailWithMessage(e.GetMsg(e.ERROR_AUTH_CHECK_TOKEN_FAIL),e.ERROR_AUTH_CHECK_TOKEN_FAIL,c)
+				app.MissToken(c)
 				c.Abort()
 				return
 		}

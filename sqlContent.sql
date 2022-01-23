@@ -124,3 +124,18 @@ CREATE TABLE `t_go_hot_content` (
    PRIMARY KEY (`id`),
    KEY `resource_id` (`resource_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8 COMMENT='热门资源';
+
+// 音乐资源表
+CREATE TABLE `t_go_music` (
+    `id`             int(11)     unsigned NOT NULL AUTO_INCREMENT,
+    `title`          varchar(256)         NOT NULL DEFAULT ''  COMMENT '音乐标题',
+    `summary`        varchar(1024)        NOT NULL DEFAULT ''  COMMENT '音乐简介',
+    `lyric`          text COLLATE utf8mb4_unicode_ci   NOT NULL DEFAULT '' COMMENT '文章内容',
+    `is_top`         tinyint(1)           NOT NULL DEFAULT 1   COMMENT '是否为置顶资源 1为否 2为是',
+    `thumb`          varchar(256)         NOT NULL DEFAULT ''  COMMENT '资源缩略图',
+    `cover`          varchar(256)         NOT NULL DEFAULT ''  COMMENT '资源封面图',
+    `is_delete`      tinyint(1)           NOT NULL DEFAULT 1   COMMENT '是否被删除 1为否 2为是',
+    `created_at`     timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `updated_at`     timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='收藏音乐表';

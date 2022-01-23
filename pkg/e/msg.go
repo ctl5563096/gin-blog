@@ -25,6 +25,8 @@ var errorMsg = map[int]string{
 	UPLOAD_FAIL							: "上传失败",
 	FIND_ARTICLE_ERROR					: "搜索文章失败",
 	PARAMS_ERROR						: "参数错误",
+	FILE_TYPE_ERROR						: "文件格式错误,请检查文件格式是否符合:",
+	CREATE_THUMB_ERROR				 	: "生成缩略图失败",
 }
 
 func GetMsg(code int) string {

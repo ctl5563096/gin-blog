@@ -7,6 +7,7 @@ import (
 	"gin-blog/pkg/util"
 	valid "gin-blog/vaild"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/go-playground/validator/v10"
 	_ "github.com/go-playground/validator/v10"
 	"strconv"
@@ -38,7 +39,7 @@ func CreateUser(c *gin.Context)  {
 	var r AdminUser
 	var errStr string
 	var errorMap map[string][]string
-	err := c.ShouldBind(&r)
+	err := c.ShouldBindBodyWith(&r,binding.JSON)
 	validate := validator.New()
 	err = validate.Struct(r)
 	if err != nil {
@@ -73,7 +74,7 @@ func CreateUser(c *gin.Context)  {
 //UpdateUser 更新用户信息
 func UpdateUser(c *gin.Context)  {
 	var r UpdateUserInfo
-	err := c.ShouldBind(&r)
+	err := c.ShouldBindBodyWith(&r,binding.JSON)
 	validate := validator.New()
 	err = validate.Struct(r)
 	if err != nil {

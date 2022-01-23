@@ -35,5 +35,9 @@ func InitRouter() *gin.Engine {
 	groups.SystemBaseRouter(group)
 	groups.ResourceBaseRouter(group)
 	ginpprof.Wrap(r)
+	// 默认404路由为非法请求
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(404, gin.H{"code": -1, "msg": "非法请求"})
+	})
 	return r
 }
