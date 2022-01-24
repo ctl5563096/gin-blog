@@ -3,3 +3,4 @@ runtime/*
 .env.shy
 vendor/*
 resource/public/pic/*
+resource/public/*
