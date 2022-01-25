@@ -41,6 +41,6 @@ func ResourceBaseRouter(Router *gin.RouterGroup) {
 		// 修改图片资源
 		apiRouterV1.PUT("/photo/detail", resource.UpdateAudio)
 		// 获取资源详情
-		apiRouterV1.GET("/photo	/detail", resource.GetMusicDetailBackend)
+		apiRouterV1.GET("/photo/detail", resource.GetMusicDetailBackend)
 	}
 }
