@@ -15,9 +15,8 @@ install_deps_job:
     # - release
     - master
   script:
-    - echo 'hi'
-#    - cd /data/gopath/go-lang
-#    - git pull
+    - cd /data/gopath/go-lang
+    - git pull
 #    - go build
 #    - systemctl restart blog
   tags:
