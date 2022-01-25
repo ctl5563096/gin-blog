@@ -6,30 +6,22 @@ stages:
   - test
 
 
-## 安装构建依赖
-#install_deps_job:
-#  stage: install_deps
-#  # 在哪个分支才会执行脚本
-#  only:
-#    # - dev
-#    # - release
-#    - master
-#  script:
-#    - cd /data/gopath/go-lang
-#    - git pull
-##    - go build
-##    - systemctl restart blog
-#  tags:
-#    - golang
-
-job1:
-  stage: test
+# 安装构建依赖
+install_deps_job:
+  stage: install_deps
+  # 在哪个分支才会执行脚本
   only:
+    # - dev
+    # - release
     - master
   script:
-    - echo "hi iam gitlab-ci"
+    - cd /data/gopath/go-lang
+    - git pull
+#    - go build
+#    - systemctl restart blog
   tags:
     - golang
+
 
 ## 构建预prod环境src目录下应用
 #build_prod_job:
