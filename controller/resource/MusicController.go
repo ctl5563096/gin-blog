@@ -146,8 +146,6 @@ func UpdateAudio(c *gin.Context)  {
 	}
 	// 获取详情
 	res := resource.UpdateAudioDetail(id,r)
-	fmt.Println(res)
-	fmt.Println(11111)
 	if !res {
 		app.Fail(c)
 		return
