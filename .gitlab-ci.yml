@@ -5,6 +5,7 @@ stages:
   - deploy_prod
   - test
 
+
 # 安装构建依赖
 install_deps_job:
   stage: install_deps
