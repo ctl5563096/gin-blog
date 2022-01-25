@@ -139,3 +139,19 @@ CREATE TABLE `t_go_music` (
     `updated_at`     timestamp            NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='收藏音乐表';
+
+
+CREATE TABLE `t_go_photos` (
+      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+      `title` varchar(256) NOT NULL DEFAULT '' COMMENT '图片标题',
+      `summary` varchar(1024) NOT NULL DEFAULT '' COMMENT '图片简介',
+      `url` varchar(1024) NOT NULL DEFAULT '' COMMENT '图片url',
+      `is_top` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否为置顶资源 1为否 2为是',
+      `file_name` varchar(255) DEFAULT '' COMMENT '文件名称',
+      `thumb` varchar(256) NOT NULL DEFAULT '' COMMENT '资源缩略图',
+      `num` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '播放次数',
+      `is_delete` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否被删除 1为否 2为是',
+      `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+      `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+      PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='收藏图片';

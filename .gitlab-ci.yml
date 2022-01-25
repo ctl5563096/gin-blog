@@ -18,7 +18,7 @@ install_deps_job:
 #    - go build
 #    - systemctl restart blog
   tags:
-    - test
+    - golang
 
 ## 构建预prod环境src目录下应用
 #build_prod_job:
