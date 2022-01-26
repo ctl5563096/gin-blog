@@ -30,12 +30,13 @@ func Init() error {
 				return nil, err
 			}
 			// 主redis无密码 注释了这块
-			if os.Getenv("REDIS_PASSWORD") != "" {
+			if os.Getenv("ENV") == "prod" && os.Getenv("REDIS_PASSWORD") != "" {
 				if _, err := c.Do("AUTH", os.Getenv("REDIS_PASSWORD")); err != nil {
 					c.Close()
 					return nil, err
 				}
 			}
+
 			// 设定默认数据库[但是放入连接池里面不能重置DataBase]
 			if os.Getenv("REDIS_DATABASE") != "" {
 				if _, err := c.Do("SELECT", os.Getenv("REDIS_DATABASE")); err != nil {
