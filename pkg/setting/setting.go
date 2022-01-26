@@ -1,6 +1,7 @@
 package setting
 
 import (
+	"fmt"
 	"github.com/go-ini/ini"
 	"log"
 	"os"
@@ -27,19 +28,14 @@ func init()  {
 	path := "conf/app.ini"
 	Cfg, err = ini.Load(path)
 	if err != nil {
-		file, err := exec.LookPath(os.Args[0])
-		pathNew, err := filepath.Abs(file)
-		index := strings.LastIndex(pathNew, string(os.PathSeparator))
+		absolutelyConfFilePath := GetAbsolutelyPath() + `/` + path
+		fmt.Println(absolutelyConfFilePath)
+		Cfg, err = ini.Load(absolutelyConfFilePath)
 		if err != nil {
-			log.Fatalln(err)
+			log.Fatalf("Fail to parse '%v': %v", absolutelyConfFilePath,err)
 		}
-		absolutelyPath := pathNew[:index]
-		confFile := absolutelyPath + `/` +path
-		Cfg, err = ini.Load(confFile)
 	}
-	if err != nil {
-		log.Fatalf("Fail to parse 'conf/app.ini or /data/gopath/go-lang/conf/app.ini': %v", err)
-	}
+
 	LoadBase()
 	LoadServer()
 	LoadApp()
@@ -67,4 +63,15 @@ func LoadApp() {
 	}
 	JwtSecret = sec.Key("JWT_SECRET").MustString("!@)*#)!@U#@*!@!)")
 	PageSize = sec.Key("PAGE_SIZE").MustInt(10)
+}
+
+func GetAbsolutelyPath() string {
+	file, err := exec.LookPath(os.Args[0])
+	path, err := filepath.Abs(file)
+	index := strings.LastIndex(path, string(os.PathSeparator))
+	path = path[:index]
+	if err != nil {
+		log.Fatal("get path error")
+	}
+	return path + `/`
 }
