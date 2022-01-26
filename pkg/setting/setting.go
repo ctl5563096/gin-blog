@@ -28,7 +28,7 @@ func init()  {
 	path := "conf/app.ini"
 	Cfg, err = ini.Load(path)
 	if err != nil {
-		absolutelyConfFilePath := GetAbsolutelyPath() + `/` + path
+		absolutelyConfFilePath := GetAbsolutelyPath() + path
 		fmt.Println(absolutelyConfFilePath)
 		Cfg, err = ini.Load(absolutelyConfFilePath)
 		if err != nil {
