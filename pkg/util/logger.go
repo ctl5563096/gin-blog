@@ -10,8 +10,9 @@ import (
 func WriteLog(fileNameInput string,level int,message string )  {
 	var prefix string
 	var emptyErr = true
+	absPath := GetAbsolutelyPath()
 	// 文件名
-	fileName := "runtime/logs/" + fileNameInput + "-" + ReturnCurrentTime("first") + ".log"
+	fileName := absPath + "runtime/logs/" + fileNameInput + "-" + ReturnCurrentTime("first") + ".log"
 
 	// 先检查文件是否存在
 	if _, err := os.Open(fileName)
@@ -23,7 +24,8 @@ func WriteLog(fileNameInput string,level int,message string )  {
 
 	// 如果不存在就循环创建文件夹 存在的话直接打开
 	if !emptyErr {
-		err := os.MkdirAll("runtime/logs", 0777)
+		logDir := absPath + "runtime/logs"
+		err := os.MkdirAll(logDir, 0777)
 		if err != nil {
 			log.Fatalln("mkdir error")
 		}
@@ -41,7 +43,6 @@ func WriteLog(fileNameInput string,level int,message string )  {
 	defer func(logFile *os.File) {
 		err := logFile.Close()
 		if err != nil {
-
 			fmt.Println("关闭文件失败!!!")
 		}
 	}(logFile)
