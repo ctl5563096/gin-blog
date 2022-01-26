@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gin-blog/models"
 	"gin-blog/pkg/cache"
 	"gin-blog/pkg/setting"
 	"gin-blog/pkg/util"
@@ -35,6 +36,8 @@ func main() {
 	router := routers.InitRouter()
 	// 初始化缓存
 	cache.Init()
+	// 初始化数据库
+	models.InitModel()
 	// 初始化语言包
 	//valid.Init()
 	s := &http.Server{
