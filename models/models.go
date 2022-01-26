@@ -15,7 +15,7 @@ import (
 const TablePrefix = "ci_"
 
 // InitModel 初始化各个链接池
-func init()  {
+func InitModel()  {
 	fmt.Println(">开始初始化各数据库连接池...")
 
 	// 分别初始化各个库的链接池
