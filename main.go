@@ -14,13 +14,6 @@ import (
 )
 
 func main() {
-	defer func() {
-		if err := recover(); err != nil {
-
-			fmt.Println("Panic Occured and Recovered in, Error Info: ", err)
-
-		}
-	}()
 	// 初始化env配置
 	var appEnv  = os.Getenv("APP_ENV")
 	var envFile = ".env"
