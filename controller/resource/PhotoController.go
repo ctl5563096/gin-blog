@@ -91,3 +91,8 @@ func DeletePhotoRecord(c *gin.Context)  {
 	app.OK(c)
 	return
 }
+
+// UpdatePhotosResource 更新图片资源
+func UpdatePhotosResource(c *gin.Context)  {
+
+}
