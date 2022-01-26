@@ -2,6 +2,7 @@ package routers
 
 import (
 	"fmt"
+	token "gin-blog/middleware"
 	"gin-blog/pkg/e"
 	"gin-blog/pkg/setting"
 	"gin-blog/routers/groups"
@@ -16,6 +17,7 @@ func InitRouter() *gin.Engine {
 	// 部分中间件
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
+	r.Use(token.Recover)
 	// 鉴权中间件 只对需要鉴权的路由进行拦截
 	// 健康检测接口
 	r.GET("/health", func(c *gin.Context) {

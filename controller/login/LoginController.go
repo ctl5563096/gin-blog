@@ -5,7 +5,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	_ "encoding/json"
-	"fmt"
 	"gin-blog/models/user"
 	"gin-blog/pkg/app"
 	"gin-blog/pkg/cache/mainCache"
@@ -40,11 +39,6 @@ type AdminUser struct {
 
 // LoginBackend /** 后台登陆 **/
 func LoginBackend(c *gin.Context)  {
-	defer func() {
-		if err := recover(); err != nil {
-			fmt.Println("Panic Occured and Recovered in, Error Info: ", err)
-		}
-	}()
 	var requestData Request
 	data := make(map[string] interface{})
 	err  := c.ShouldBindBodyWith(&requestData,binding.JSON)
