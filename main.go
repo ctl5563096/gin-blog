@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"gin-blog/models"
 	"gin-blog/pkg/cache"
 	"gin-blog/pkg/setting"
 	"gin-blog/pkg/util"
@@ -30,8 +29,6 @@ func main() {
 	util.WriteLog("project",3,"端口:" + strconv.Itoa(setting.HTTPPort))
 	// 初始化路由
 	router := routers.InitRouter()
-	// 初始化模型链接池
-	models.Init()
 	// 初始化缓存
 	cache.Init()
 	// 初始化语言包

@@ -15,7 +15,7 @@ StartLimitIntervalSec=0
 User=gitlab-runner
 Group=gitlab-runner
 
-ExecStart=/data/gopath/go-lang/gin-blog  >> /tmp/gin-blog.log
+ExecStart=/data/gopath/go-lang/main  >> /tmp/gin-blog.log
 
 StandardOutput=journal
 StandardError=inherit
