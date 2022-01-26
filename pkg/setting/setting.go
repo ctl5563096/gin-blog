@@ -32,7 +32,10 @@ func init()  {
 		fmt.Println(absolutelyConfFilePath)
 		Cfg, err = ini.Load(absolutelyConfFilePath)
 		if err != nil {
-			log.Fatalf("Fail to parse '%v': %v", absolutelyConfFilePath,err)
+			Cfg, err = ini.Load("/data/gopath/go-lang/conf/app.ini")
+			if err != nil {
+				log.Fatalf("Fail to parse '%v': %v", absolutelyConfFilePath,err)
+			}
 		}
 	}
 
