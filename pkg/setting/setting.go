@@ -34,7 +34,8 @@ func init()  {
 			log.Fatalln(err)
 		}
 		absolutelyPath := pathNew[:index]
-		Cfg, err = ini.Load(absolutelyPath + `/` +path)
+		confFile := absolutelyPath + `/` +path
+		Cfg, err = ini.Load(confFile)
 	}
 	if err != nil {
 		log.Fatalf("Fail to parse 'conf/app.ini or /data/gopath/go-lang/conf/app.ini': %v", err)
