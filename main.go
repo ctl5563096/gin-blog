@@ -20,10 +20,14 @@ func main() {
 	if appEnv != "" {
 		envFile = ".env" + "." +appEnv
 	}
+	envPath :=  util.GetAbsolutelyPath() + `/` +envFile
 	// 加载env目录
-	err := godotenv.Load(envFile)
+	err := godotenv.Load(envPath)
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		err := godotenv.Load(envFile)
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 	util.WriteLog("project",3,"项目启动")
 	util.WriteLog("project",3,"端口:" + strconv.Itoa(setting.HTTPPort))

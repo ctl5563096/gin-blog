@@ -3,6 +3,10 @@ package setting
 import (
 	"github.com/go-ini/ini"
 	"log"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -20,9 +24,17 @@ var (
 
 func init()  {
 	var err error
-	Cfg, err = ini.Load("conf/app.ini")
+	path := "conf/app.ini"
+	Cfg, err = ini.Load(path)
 	if err != nil {
-		Cfg, err = ini.Load("/data/gopath/go-lang/conf/app.ini")
+		file, err := exec.LookPath(os.Args[0])
+		pathNew, err := filepath.Abs(file)
+		index := strings.LastIndex(pathNew, string(os.PathSeparator))
+		if err != nil {
+			log.Fatalln(err)
+		}
+		absolutelyPath := pathNew[:index]
+		Cfg, err = ini.Load(absolutelyPath + path)
 	}
 	if err != nil {
 		log.Fatalf("Fail to parse 'conf/app.ini or /data/gopath/go-lang/conf/app.ini': %v", err)
