@@ -17,7 +17,7 @@ install_deps_job:
     - cd /data/gopath/go-lang
     - git pull
     - go build main.go
-#    - systemctl restart blog
+    - systemctl restart blog
   tags:
     - golang
 
