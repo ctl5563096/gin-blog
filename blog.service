@@ -6,7 +6,8 @@ After=network-online.target
 [Service]
 RuntimeDirectory=blog_go
 #GOENVMODE=production
-Environment="PID_DIR=/var/run/blog_go"
+#这里是添加环境变量 相当于在执行的命令前面加上env=xxxx
+Environment=""
 WorkingDirectory=/data/gopath/go-lang
 Restart=always
 RestartSec=10
