@@ -38,9 +38,9 @@ func ResourceBaseRouter(Router *gin.RouterGroup) {
 		apiRouterV1.POST("/photo/created",resource.CreatePhoto)
 		// 删除图片资源
 		apiRouterV1.DELETE("/photo/delete",resource.DeletePhotoRecord)
-		// 修改图片资源
-		apiRouterV1.PUT("/photo/detail", resource.UpdateAudio)
 		// 获取资源详情
-		apiRouterV1.GET("/photo/detail", resource.GetMusicDetailBackend)
+		apiRouterV1.GET("/photo/detail", resource.GetPhotoDetailBackend)
+		// 修改图片资源
+		apiRouterV1.PUT("/photo/detail", resource.UpdatePhotosResource)
 	}
 }
