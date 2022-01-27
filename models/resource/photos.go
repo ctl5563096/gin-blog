@@ -78,3 +78,22 @@ func DeletePhotoRecord(id int) bool {
 	}
 	return true
 }
+
+// GetPhotoDetail 获取图片详情
+func GetPhotoDetail(id int) (PhotosData,error) {
+	var r PhotosData
+	err := db.Table(PhotosTableName).Where("id = ?",id).Where("is_delete = ?", 1).First(&r)
+	if err.Error != nil {
+		return r,err.Error
+	}
+	return r,nil
+}
+
+// UpdatePhotoDetail 更新图片详情
+func UpdatePhotoDetail(id int, data PhotosData) bool  {
+	err := db.Table(PhotosTableName).Where("id = ?",id).Update(data)
+	if err.Error != nil {
+		return false
+	}
+	return true
+}

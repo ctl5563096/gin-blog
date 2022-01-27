@@ -92,7 +92,62 @@ func DeletePhotoRecord(c *gin.Context)  {
 	return
 }
 
+// GetPhotoDetailBackend 获取图片资源详情
+func GetPhotoDetailBackend(c *gin.Context)  {
+	var id, _ = 	strconv.Atoi(c.DefaultQuery("id","0"))
+	if id <= 0 {
+		app.Fail(c)
+		return
+	}
+	// 获取详情
+	result,err := resource.GetPhotoDetail(id)
+	if err != nil {
+		app.Fail(c)
+		return
+	}
+	app.OkWithData(result,c)
+	return
+}
+
 // UpdatePhotosResource 更新图片资源
 func UpdatePhotosResource(c *gin.Context)  {
-
+	var id, _ = 	strconv.Atoi(c.DefaultQuery("id","0"))
+	if id <= 0 {
+		app.Fail(c)
+		return
+	}
+	var (
+		r        resource.PhotosData
+		errStr   string
+		errorMap map[string][]string
+	)
+	err := c.ShouldBindBodyWith(&r, binding.JSON)
+	validate := validator.New()
+	err = validate.Struct(r)
+	if err != nil {
+		switch err.(type) {
+		case validator.ValidationErrors:
+			errorMap = valid.Translate(err)
+			//循环遍历Map 只返回第一个错误信息
+			for _, v := range errorMap {
+				for _, z := range v {
+					util.WriteLog("user_business_error", 4, z)
+					app.FailWithMessage(z, 4, c)
+					return
+				}
+			}
+		default:
+			errStr = "未知错误"
+		}
+		app.FailWithMessage(errStr, 1, c)
+		return
+	}
+	// 更新图片详情
+	res := resource.UpdatePhotoDetail(id,r)
+	if !res {
+		app.Fail(c)
+		return
+	}
+	app.OK(c)
+	return
 }
