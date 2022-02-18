@@ -127,6 +127,7 @@ func Photo(c *gin.Context)  {
 		data 		 := make(map[string]interface{})
 		data["path"]  = ossUrl
 		data["thumb"] = thumbOssThumb
+		data["fileName"] = randomName + ext
 
 		app.OkWithData(data,c)
 		return

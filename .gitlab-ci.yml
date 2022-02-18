@@ -16,6 +16,8 @@ install_deps_job:
   script:
     - cd /data/gopath/go-lang
     - git pull
+    - go mod tidy
+    - go mod vendor
     - go build main.go
     - sudo systemctl restart blog
   tags:

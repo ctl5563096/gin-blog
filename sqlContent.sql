@@ -155,3 +155,17 @@ CREATE TABLE `t_go_photos` (
       `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
       PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='收藏图片';
+
+CREATE TABLE `t_go_photos_list` (
+        `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+        `uid` int(11) unsigned NOT NULL COMMENT '上传id',
+        `status` VARCHAR(20) NOT NULL DEFAULT 'success' COMMENT '上传状态',
+        `resource_id` int(11) unsigned NOT NULL COMMENT '图片资源id',
+        `url` varchar(1024) NOT NULL DEFAULT '' COMMENT '图片url',
+        `file_name` varchar(255) DEFAULT '' COMMENT '文件名称',
+        `thumb` varchar(256) NOT NULL DEFAULT '' COMMENT '资源缩略图',
+        `is_delete` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否被删除 1为否 2为是',
+        `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+        `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+        PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COMMENT='收藏图片系列';
