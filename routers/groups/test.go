@@ -11,6 +11,8 @@ func TestRouter(Router *gin.RouterGroup) {
 	apiRouterV1 := Router.Group("v1/test")
 	{
 		// 获取主业务接口
+		apiRouterV1.POST("testSecond", test.TestPortSecond)
+		// 获取主业务接口
 		apiRouterV1.GET("test", test.TestPort)
 		// 测试图片缩略图
 		apiRouterV1.GET("thumb", test.TestThumb)

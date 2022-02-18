@@ -70,9 +70,7 @@ func ArrayDiff(array1 []interface{}, othersParams ...[]interface{}) ([]interface
 	}
 	var res = make([]interface{}, 0, len(tmp))
 	for _, param := range othersParams {
-		fmt.Println(param)
 		for _, arg := range param {
-			fmt.Println(arg)
 			if tmp[arg] == 0 {
 				res = append(res, arg)
 			}
@@ -126,6 +124,32 @@ func InArrayHelper(needle interface{}, hyStack interface{}) bool {
 		}
 	case int64:
 		for _, item := range hyStack.([]int64) {
+			if key == item {
+				return true
+			}
+		}
+	default:
+		return false
+	}
+	return false
+}
+
+func InArray(needle interface{}, hystack interface{}) bool {
+	switch key := needle.(type) {
+	case string:
+		for _, item := range hystack.([]string) {
+			if key == item {
+				return true
+			}
+		}
+	case int:
+		for _, item := range hystack.([]int) {
+			if key == item {
+				return true
+			}
+		}
+	case int64:
+		for _, item := range hystack.([]int64) {
 			if key == item {
 				return true
 			}

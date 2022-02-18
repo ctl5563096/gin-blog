@@ -15,6 +15,8 @@ func ResourceBaseRouter(Router *gin.RouterGroup) {
 		apiRouterV1.GET("/music/list", resource.GetMusicList)
 		apiRouterV1.GET("/photos/list", resource.GetPhotoList)
 		apiRouterV1.GET("/ByTag",resource.GetResourceCodeArticle)
+		// 前段获取图片详情
+		apiRouterV1.GET("/photo/frontDetail",resource.GetPhotoDetailFront)
 		apiRouterV1.Use(token.BeforeBusiness())
 		// 新增接口
 		apiRouterV1.POST("/hot/resource", resource.CreateNewHotRecord)
