@@ -19,6 +19,8 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Recovery())
 	// 全局异常捕获器
 	r.Use(token.Recover)
+	// 跨域请求
+	r.Use(token.Cors())
 	// 鉴权中间件 只对需要鉴权的路由进行拦截
 	// 健康检测接口
 	r.GET("/health", func(c *gin.Context) {
