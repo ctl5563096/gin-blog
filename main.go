@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	// 初始化env配置
+	// 初始化env配置1
 	var appEnv  = os.Getenv("APP_ENV")
 	var envFile = ".env"
 	if appEnv != "" {
