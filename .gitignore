@@ -4,4 +4,4 @@ runtime/*
 vendor/*
 resource/public/pic/*
 resource/public/*
-main
+main.env
