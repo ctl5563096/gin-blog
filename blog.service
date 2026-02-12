@@ -8,7 +8,7 @@ RuntimeDirectory=blog_go
 #GOENVMODE=production
 #这里是添加环境变量 相当于在执行的命令前面加上env=xxxx
 Environment=""
-WorkingDirectory=/data/gopath/go-lang
+WorkingDirectory=/data/data/data/go-lang-blog-backend/gin-blog
 Restart=always
 RestartSec=10
 StartLimitIntervalSec=0
@@ -16,7 +16,7 @@ StartLimitIntervalSec=0
 User=gitlab-runner
 Group=gitlab-runner
 
-ExecStart=/data/gopath/go-lang/main  >> /tmp/gin-blog.log
+ExecStart=/data/data/data/go-lang-blog-backend/gin-blog/gin-blog-linux  >> /tmp/gin-blog.log
 
 StandardOutput=journal
 StandardError=inherit
