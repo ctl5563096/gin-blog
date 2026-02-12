@@ -2,12 +2,14 @@ package user
 
 import (
 	"fmt"
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"log"
 	"os"
 	"time"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
+
 // 数据库实例
 var db *gorm.DB
 
@@ -15,7 +17,6 @@ type Model struct {
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
-
 
 const (
 	// DataBase 默认链接库，有些模型里面需要设置库的
@@ -31,9 +32,10 @@ const (
 )
 
 // Init 初始化mysql链接
-func Init()  {
+func Init() {
 	//dns := "chentulin:A5563096z@tcp(120.78.13.233:3306)/swoft?charset=utf8mb4&parseTime=True&loc=Local"
 	var err error
+	fmt.Printf("DATABASE_HOST: %s\n", os.Getenv("DATABASE_HOST"))
 	db, err = gorm.Open("mysql", fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
 		os.Getenv("DATABASE_USER"),
 		os.Getenv("DATABASE_PASSWORD"),
@@ -68,7 +70,6 @@ func CloseDB() {
 	}(db)
 }
 
-
 // updateTimeStampForUpdateCallback will set `UpdatedAt` when updating 更新的钩子自动更新update_time
 func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
 	if _, ok := scope.Get("gorm:update_column"); !ok {
@@ -79,4 +80,7 @@ func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
 	}
 }
 
-
+// GetDB 获取数据库连接实例
+func GetDB() *gorm.DB {
+	return db
+}

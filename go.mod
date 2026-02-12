@@ -15,7 +15,6 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646
 	github.com/opentracing/opentracing-go v1.2.0
-	github.com/syyongx/php2go v0.9.6
 	github.com/unknwon/com v1.0.1
 )
 

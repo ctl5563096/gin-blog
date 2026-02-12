@@ -90,5 +90,10 @@ func updateTimeStampForUpdateCallback(scope *gorm.Scope) {
 	}
 }
 
+// GetDB 获取数据库连接实例
+func GetDB() *gorm.DB {
+	return db
+}
+
 
 

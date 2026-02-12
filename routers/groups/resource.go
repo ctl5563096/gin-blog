@@ -14,9 +14,11 @@ func ResourceBaseRouter(Router *gin.RouterGroup) {
 		// 前端路由接口
 		apiRouterV1.GET("/music/list", resource.GetMusicList)
 		apiRouterV1.GET("/photos/list", resource.GetPhotoList)
-		apiRouterV1.GET("/ByTag",resource.GetResourceCodeArticle)
+		apiRouterV1.GET("/ByTag", resource.GetResourceCodeArticle)
 		// 前段获取图片详情
-		apiRouterV1.GET("/photo/frontDetail",resource.GetPhotoDetailFront)
+		apiRouterV1.GET("/photo/frontDetail", resource.GetPhotoDetailFront)
+		// 前端获取音乐详情
+		apiRouterV1.GET("/front/music/detail", resource.GetMusicDetailBackend)
 		apiRouterV1.Use(token.BeforeBusiness())
 		// 新增接口
 		apiRouterV1.POST("/hot/resource", resource.CreateNewHotRecord)
@@ -37,9 +39,9 @@ func ResourceBaseRouter(Router *gin.RouterGroup) {
 		// 修改音乐资源
 		apiRouterV1.PUT("/music/detail", resource.UpdateAudio)
 		// 创建图片资源
-		apiRouterV1.POST("/photo/created",resource.CreatePhoto)
+		apiRouterV1.POST("/photo/created", resource.CreatePhoto)
 		// 删除图片资源
-		apiRouterV1.DELETE("/photo/delete",resource.DeletePhotoRecord)
+		apiRouterV1.DELETE("/photo/delete", resource.DeletePhotoRecord)
 		// 获取资源详情
 		apiRouterV1.GET("/photo/detail", resource.GetPhotoDetailBackend)
 		// 修改图片资源

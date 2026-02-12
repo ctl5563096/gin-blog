@@ -13,8 +13,10 @@ import (
 
 type Server struct {
 }
+
 var once sync.Once
 var ossServerInstance *Server
+
 func NewOssServer() *Server {
 	once.Do(func() {
 		ossServerInstance = &Server{}
@@ -37,7 +39,7 @@ func (that *Server) Init(accessKeyId, accessKeySecret, bucketName, endPoint stri
 }
 
 // UploadALiYunOss 上传至阿里云oss
-func UploadALiYunOss(c *gin.Context,file string,fileName string,ext string,originPath string) interface{} {
+func UploadALiYunOss(c *gin.Context, file string, fileName string, ext string, originPath string) interface{} {
 	accessKeyId := os.Getenv("ACCESSKEYID")
 	accessKeySecret := os.Getenv("ACCESSKEYIDSECRET")
 	bucketName := os.Getenv("BUCKETNAME")
@@ -46,18 +48,15 @@ func UploadALiYunOss(c *gin.Context,file string,fileName string,ext string,origi
 	if err != nil {
 		fmt.Println(err)
 	}
-	newOssFileName :=  time.Now().Format("200612")
-	objectKey := file + "/" + newOssFileName + "/" + fileName  + ext
-	fmt.Println(objectKey)
-	fmt.Println(originPath)
+	newOssFileName := time.Now().Format("200612")
+	objectKey := file + "/" + newOssFileName + "/" + fileName + ext
 	err = bucket.PutObjectFromFile(objectKey, originPath)
 	if err != nil {
 		fmt.Println(err.Error())
-		app.FailWithMessage(e.GetMsg(e.UPLOAD_FAIL) + err.Error(),e.UPLOAD_FAIL,c)
+		app.FailWithMessage(e.GetMsg(e.UPLOAD_FAIL)+err.Error(), e.UPLOAD_FAIL, c)
 		return nil
 	}
 	var ossUrl string
 	ossUrl = "https://ctl-blog-1.oss-cn-beijing.aliyuncs.com/" + objectKey
 	return ossUrl
 }
-
