@@ -5,3 +5,4 @@ vendor/*
 resource/public/pic/*
 resource/public/*
 main.env
+.env
