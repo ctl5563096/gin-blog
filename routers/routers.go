@@ -24,7 +24,7 @@ func InitRouter() *gin.Engine {
 	// 鉴权中间件 只对需要鉴权的路由进行拦截
 	// 健康检测接口
 	r.GET("/health", func(c *gin.Context) {
-		c.String(e.SUCCESS, "health - " + fmt.Sprint(time.Now().Unix()))
+		c.String(e.SUCCESS, "health - "+fmt.Sprint(time.Now().Unix()))
 	})
 	// 静态资源文件访问
 	r.StaticFS("/resource", http.Dir("resource/"))
@@ -40,6 +40,8 @@ func InitRouter() *gin.Engine {
 	groups.SystemBaseRouter(group)
 	groups.ResourceBaseRouter(group)
 	groups.DashboardBaseRouter(group)
+	groups.MessageBaseRouter(group)
+	groups.LedgerBaseRouter(group)
 	ginpprof.Wrap(r)
 	// 默认404路由为非法请求
 	r.NoRoute(func(c *gin.Context) {

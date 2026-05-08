@@ -6,3 +6,4 @@ resource/public/pic/*
 resource/public/*
 main.env
 .env
+docs/ledger_account_development_tasks.md

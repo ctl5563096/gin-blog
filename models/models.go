@@ -3,6 +3,8 @@ package models
 import (
 	"fmt"
 	"gin-blog/models/blog"
+	"gin-blog/models/ledger"
+	"gin-blog/models/message"
 	"gin-blog/models/oss"
 	"gin-blog/models/resource"
 	"gin-blog/models/rule"
@@ -31,6 +33,10 @@ func InitModel() {
 	system.Init()
 	// 初始化资源的数据库
 	resource.Init()
+	// 初始化留言数据库
+	message.Init()
+	// 初始化家庭记账数据库
+	ledger.Init()
 
 	// 设置表名【注意所有数据库链接都会通用这个方法】
 	gorm.DefaultTableNameHandler = func(db *gorm.DB, defaultTableName string) string {

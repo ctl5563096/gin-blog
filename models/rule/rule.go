@@ -9,10 +9,17 @@ import (
 var tableNameRule = "t_go_rule"
 
 type AllRule struct {
-	Id  		int 		`json:"id"`
-	Pid 		int 		`json:"pid"`
-	Label 		string  	`json:"label"`
-	ChildNode 	[]*AllRule	`json:"childNode"`
+	Id         int        `json:"id"`
+	Pid        int        `json:"pid"`
+	Label      string     `json:"label"`
+	RuleName   string     `json:"rule_name"`
+	IsMenu     int        `json:"is_menu"`
+	Icon       string     `json:"icon"`
+	Controller string     `json:"controller"`
+	Action     string     `json:"action"`
+	Sort       int        `json:"sort"`
+	Url        string     `json:"url"`
+	ChildNode  []*AllRule `json:"childNode"`
 }
 
 type DeleteRule struct {
@@ -62,7 +69,7 @@ type EditRule struct {
 // GetAllRule 获取所有的权限
 func GetAllRule() []*AllRule {
 	var rs []*AllRule
-	db.Table(tableNameRule).Select("id,pid,rule_name as label").Find(&rs)
+	db.Table(tableNameRule).Select("id,pid,rule_name as label,rule_name,is_menu,icon,controller,action,sort,url").Find(&rs)
 	return rs
 }
 
@@ -122,11 +129,13 @@ func GetRuleById(id int) []*DetailRule {
 func UpdateRule(editStruct *EditRule)  bool{
 	data := make(map[string]interface{})
 	data["rule_name"] 	= editStruct.RuleName
-	data["is_menu"] 	= editStruct.RuleName
+	data["is_menu"] 	= editStruct.IsMenu
 	data["icon"] 		= editStruct.Icon
+	data["pid"] 		= editStruct.Pid
 	data["controller"] 	= editStruct.Controller
 	data["action"] 		= editStruct.Action
 	data["sort"] 		= editStruct.Sort
+	data["url"] 		= editStruct.Url
 	db.Table(tableNameRule).Select("id").Where("id = ?" ,editStruct.Id).Updates(data)
 	if db.Error != nil {
 		util.WriteLog("update_rule_err",4,db.Error.Error())
