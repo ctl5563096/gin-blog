@@ -29,8 +29,7 @@ func Init() error {
 			if err != nil {
 				return nil, err
 			}
-			// 主redis无密码 注释了这块
-			if os.Getenv("ENV") == "prod" && os.Getenv("REDIS_PASSWORD") != "" {
+			if os.Getenv("REDIS_PASSWORD") != "" {
 				if _, err := c.Do("AUTH", os.Getenv("REDIS_PASSWORD")); err != nil {
 					c.Close()
 					return nil, err
@@ -63,5 +62,4 @@ func GetStaticRedisCon() (redis.Conn, error) {
 	}
 	return conn, err
 }
-
 
