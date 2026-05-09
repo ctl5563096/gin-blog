@@ -10,6 +10,7 @@ import (
 	"gin-blog/pkg/app"
 	"gin-blog/pkg/cache/mainCache"
 	"gin-blog/pkg/e"
+	"gin-blog/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/gomodule/redigo/redis"
@@ -120,10 +121,15 @@ func code2Session(code string) (WxCodeSession, error) {
 func createLedgerToken(wxSession WxCodeSession) (string, error) {
 	redisConnect := mainCache.MainRedisConn.Get()
 	defer redisConnect.Close()
+	if err := redisConnect.Err(); err != nil {
+		util.WriteLog("ledger-auth", 5, fmt.Sprintf("redis get connection failed: %v", err))
+		return "", err
+	}
 
 	h := md5.New()
 	h.Write([]byte(wxSession.OpenId + "_" + wxSession.SessionKey + "_" + fmt.Sprint(time.Now().UnixNano())))
 	tokenValue := hex.EncodeToString(h.Sum(nil))
+	util.WriteLog("ledger-auth", 1, fmt.Sprintf("create token start openid=%s tokenPrefix=%s", maskOpenId(wxSession.OpenId), tokenValue[:8]))
 
 	session := tokenMiddleware.LedgerSession{
 		OpenId:  wxSession.OpenId,
@@ -131,12 +137,22 @@ func createLedgerToken(wxSession WxCodeSession) (string, error) {
 	}
 	sessionJson, err := json.Marshal(session)
 	if err != nil {
+		util.WriteLog("ledger-auth", 4, fmt.Sprintf("marshal ledger session failed openid=%s err=%v", maskOpenId(wxSession.OpenId), err))
 		return "", err
 	}
 
 	_, err = redisConnect.Do("SET", "ledger:token:"+tokenValue, sessionJson, "EX", 86400)
 	if err != nil && err != redis.ErrNil {
+		util.WriteLog("ledger-auth", 5, fmt.Sprintf("redis set token failed openid=%s tokenPrefix=%s err=%v", maskOpenId(wxSession.OpenId), tokenValue[:8], err))
 		return "", err
 	}
+	util.WriteLog("ledger-auth", 1, fmt.Sprintf("redis set token success openid=%s tokenPrefix=%s", maskOpenId(wxSession.OpenId), tokenValue[:8]))
 	return tokenValue, nil
+}
+
+func maskOpenId(openid string) string {
+	if len(openid) <= 8 {
+		return "***"
+	}
+	return openid[:4] + "***" + openid[len(openid)-4:]
 }
