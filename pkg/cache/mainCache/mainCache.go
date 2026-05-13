@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gomodule/redigo/redis"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -31,8 +32,10 @@ func Init() error {
 			}
 			if os.Getenv("REDIS_PASSWORD") != "" {
 				if _, err := c.Do("AUTH", os.Getenv("REDIS_PASSWORD")); err != nil {
-					c.Close()
-					return nil, err
+					if !strings.Contains(err.Error(), "without any password configured") {
+						c.Close()
+						return nil, err
+					}
 				}
 			}
 
@@ -62,4 +65,3 @@ func GetStaticRedisCon() (redis.Conn, error) {
 	}
 	return conn, err
 }
-

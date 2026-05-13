@@ -110,6 +110,113 @@ func GetSummary(c *gin.Context) {
 	app.OkWithData(summary, c)
 }
 
+func GetTransactionCategoryConfigs(c *gin.Context) {
+	ownerId := getLedgerOwnerId(c)
+	if ownerId == "" {
+		app.MissToken(c)
+		return
+	}
+	account, ok := getLedgerAccount(c, ownerId)
+	if !ok {
+		return
+	}
+
+	list, err := ledger.GetTransactionCategoryConfigs(account.Id, ownerId)
+	if err != nil {
+		app.FailWithMessage("固定分类获取失败", 1, c)
+		return
+	}
+	app.OkWithData(list, c)
+}
+
+func UpdateTransactionCategoryConfig(c *gin.Context) {
+	var r ledger.UpdateTransactionCategoryConfig
+	if !bindAndValidate(c, &r) {
+		return
+	}
+	ownerId := getLedgerOwnerId(c)
+	account, ok := getLedgerAccount(c, ownerId)
+	if !ok {
+		return
+	}
+	if err := ledger.UpdateTransactionCategoryConfigRecord(account.Id, ownerId, &r); err != nil {
+		app.FailWithMessage("固定分类更新失败", 1, c)
+		return
+	}
+	app.OkWithMessage("固定分类更新成功", c)
+}
+
+func DeleteTransactionCategoryConfig(c *gin.Context) {
+	id, _ := strconv.Atoi(c.DefaultQuery("id", "0"))
+	ownerId := getLedgerOwnerId(c)
+	account, ok := getLedgerAccount(c, ownerId)
+	if !ok {
+		return
+	}
+	if id <= 0 {
+		app.FailWithParameter("缺少固定分类 id", c)
+		return
+	}
+	if err := ledger.DeleteTransactionCategoryConfigRecord(id, account.Id, ownerId); err != nil {
+		app.FailWithMessage("固定分类删除失败", 1, c)
+		return
+	}
+	app.OkWithMessage("固定分类删除成功", c)
+}
+
+func GetMonthlySavingConfigs(c *gin.Context) {
+	ownerId := getLedgerOwnerId(c)
+	if ownerId == "" {
+		app.MissToken(c)
+		return
+	}
+	account, ok := getLedgerAccount(c, ownerId)
+	if !ok {
+		return
+	}
+	list, err := ledger.GetMonthlySavingConfigs(account.Id, ownerId)
+	if err != nil {
+		app.FailWithMessage("固定储蓄获取失败", 1, c)
+		return
+	}
+	app.OkWithData(list, c)
+}
+
+func UpdateMonthlySavingConfig(c *gin.Context) {
+	var r ledger.UpdateMonthlySavingConfig
+	if !bindAndValidate(c, &r) {
+		return
+	}
+	ownerId := getLedgerOwnerId(c)
+	account, ok := getLedgerAccount(c, ownerId)
+	if !ok {
+		return
+	}
+	if err := ledger.UpdateMonthlySavingConfigRecord(account.Id, ownerId, &r); err != nil {
+		app.FailWithMessage("固定储蓄更新失败", 1, c)
+		return
+	}
+	app.OkWithMessage("固定储蓄更新成功", c)
+}
+
+func DeleteMonthlySavingConfig(c *gin.Context) {
+	id, _ := strconv.Atoi(c.DefaultQuery("id", "0"))
+	ownerId := getLedgerOwnerId(c)
+	account, ok := getLedgerAccount(c, ownerId)
+	if !ok {
+		return
+	}
+	if id <= 0 {
+		app.FailWithParameter("缺少固定储蓄 id", c)
+		return
+	}
+	if err := ledger.DeleteMonthlySavingConfigRecord(id, account.Id, ownerId); err != nil {
+		app.FailWithMessage("固定储蓄删除失败", 1, c)
+		return
+	}
+	app.OkWithMessage("固定储蓄删除成功", c)
+}
+
 func GetBudget(c *gin.Context) {
 	ownerId := getLedgerOwnerId(c)
 	if ownerId == "" {
@@ -146,6 +253,44 @@ func SaveBudget(c *gin.Context) {
 		return
 	}
 	app.OkWithMessage("预算保存成功", c)
+}
+
+func GetSavings(c *gin.Context) {
+	ownerId := getLedgerOwnerId(c)
+	if ownerId == "" {
+		app.MissToken(c)
+		return
+	}
+	account, ok := getLedgerAccount(c, ownerId)
+	if !ok {
+		return
+	}
+
+	savings, err := ledger.GetSavings(account, ownerId)
+	if err != nil {
+		app.FailWithMessage("储蓄信息获取失败", 1, c)
+		return
+	}
+	app.OkWithData(savings, c)
+}
+
+func SaveSaving(c *gin.Context) {
+	var r ledger.SaveSaving
+	if !bindAndValidate(c, &r) {
+		return
+	}
+	r.OwnerId = getLedgerOwnerId(c)
+	account, ok := getLedgerAccount(c, r.OwnerId)
+	if !ok {
+		return
+	}
+	r.AccountId = account.Id
+
+	if err := ledger.SaveSavingRecord(account, &r); err != nil {
+		app.FailWithMessage("储蓄信息保存失败", 1, c)
+		return
+	}
+	app.OkWithMessage("储蓄信息保存成功", c)
 }
 
 func GetAccounts(c *gin.Context) {
